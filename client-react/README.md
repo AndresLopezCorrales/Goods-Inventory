@@ -8,4 +8,5 @@ Simply use:
 
 ...
 npm install
+npm install vite@4 --save-dev
 npm run dev
