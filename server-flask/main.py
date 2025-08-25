@@ -1,21 +1,21 @@
 from flask import Flask
-from flask_cors import CORS
+from app.database import db
+from app.controllers.excel_loader import load_excel_data
+from app.properties import name, password, server, database
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{name}:{password}@{server}/{database}"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-CORS(app) #enable CORS in all routes
+    db.init_app(app)
 
-#pruebas
-@app.route('/')
-def hello_world():
-    return "Hello World"
+    with app.app_context():
+        db.create_all()
 
-@app.route('/api/users')
-def get_users():
-    return {
-        "users": ["Alice", "Bob", "Charlie"]
-    }
+        # Ejecutar la migración de Excel -> DB
+        load_excel_data("app/data/areas.xls", "app/data/articulos.xls")
 
+    return app
 
-if __name__ == '__main__':
-    app.run(debug=True) #By Default runs in port 5000
+app = create_app()
