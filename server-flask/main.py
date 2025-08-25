@@ -1,7 +1,7 @@
 from flask import Flask
 from app.database import db
 from app.controllers.excel_loader import load_excel_data
-from app.properties import name, password, server, database
+from app.properties.data import name, password, server, database
 
 def create_app():
     app = Flask(__name__)
