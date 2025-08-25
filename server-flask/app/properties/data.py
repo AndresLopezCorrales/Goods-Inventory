@@ -1,0 +1,4 @@
+name = "root"
+password = ""
+server = "localhost"
+database = "inventario_csti"
